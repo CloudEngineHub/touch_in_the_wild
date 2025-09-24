@@ -81,7 +81,7 @@ Generate visuo-tactile-only training dataset:
 
 ## 🧑‍🔬 Pre‑training the Visuo‑Tactile MAE
 
-1. **Dataset** – use any `dataset.zarr.zip` created above.
+1. **Dataset** – We provide all our demonstrations and the pretraining dataset in `.zarr.zip` format on [Hugging Face](https://huggingface.co/datasets/binghaohuang-robot/touch_in_the_wild-dataset).
 2. **Launch training**
 
    ```bash
