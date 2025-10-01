@@ -161,7 +161,7 @@ Refer to the [UMI Hardware Guide](https://github.com/real-stanford/universal_man
 ### 🖐️ Tactile Setup
 
 1. Physically connect both tactile sensors to the machine running the policy.
-2. Follow the [tactile hardware guide](https://github.com/YolandaXinyueZhu/TactileUMI_ros2/tree/main?tab=readme-ov-file#-tactile-hardware) to configure persistent port naming.
+2. Follow the [tactile hardware guide](https://github.com/YolandaXinyueZhu/touch_in_the_wild-data-collection) to configure persistent port naming.
 
 ### 🤖 Robot Setup
 
