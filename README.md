@@ -5,7 +5,7 @@
 
 <img width="90%" src="assets/teaser.png"></p>
 
-[Xinyue Zhu](https://binghao-huang.github.io/touch_in_the_wild/)<sup>\* 1</sup>,
+[Xinyue Zhu](https://xinyuezhu.com)<sup>\* 1</sup>,
 [Binghao Huang](https://binghao-huang.github.io/)<sup>\* 1</sup>,
 [Yunzhu Li](https://yunzhuli.github.io/)<sup>1</sup>
 
