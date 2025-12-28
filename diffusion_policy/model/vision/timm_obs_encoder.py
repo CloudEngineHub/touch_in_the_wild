@@ -158,42 +158,33 @@ class TimmObsEncoder(ModuleAttrMixin):
                 # remove the decoder
                 del self.pretrained_tactile_model.decoder
 
-                if load_pretrain_ckpt:
-                    assert pretrain_ckpt_path is not None, \
-                        "[TimmObsEncoder] pretrain_ckpt_path must be set in config or via CLI"
-                    ckpt_path = pretrain_ckpt_path
-                    print(f"[TimmObsEncoder] Attempting to load TactileAutoencoderModel from {ckpt_path}")
-                    ckpt = torch.load(ckpt_path, map_location="cpu")
+                if load_pretrain_ckpt and pretrain_ckpt_path is not None:
+                    if os.path.exists(pretrain_ckpt_path):
+                        ckpt_path = pretrain_ckpt_path
+                        print(f"[TimmObsEncoder] Attempting to load TactileAutoencoderModel from {ckpt_path}")
+                        ckpt = torch.load(ckpt_path, map_location="cpu")
 
-                    raw = ckpt["ema_state_dict"]
-                    # 1) Drop the EMA bookkeeping
-                    filtered = {k: v for k, v in raw.items() if k != "n_averaged"}
-                    # 2) Strip off any "module." prefixes
-                    stripped = {
-                        (k[len("module."):] if k.startswith("module.") else k): v
-                        for k, v in filtered.items()
-                    }
-                    # 3) Remove any decoder keys
-                    clean = {
-                        k: v for k, v in stripped.items()
-                        if not k.startswith("decoder.")
-                    }
-                    # 4) Load
-                    self.pretrained_tactile_model.load_state_dict(clean, strict=True)
-                    print("[TimmObsEncoder] TactileAutoencoderModel weights loaded successfully!")
+                        raw = ckpt["ema_state_dict"]
+                        # 1) Drop the EMA bookkeeping
+                        filtered = {k: v for k, v in raw.items() if k != "n_averaged"}
+                        # 2) Strip off any "module." prefixes
+                        stripped = {
+                            (k[len("module."):] if k.startswith("module.") else k): v
+                            for k, v in filtered.items()
+                        }
+                        # 3) Remove any decoder keys
+                        clean = {
+                            k: v for k, v in stripped.items()
+                            if not k.startswith("decoder.")
+                        }
+                        # 4) Load
+                        self.pretrained_tactile_model.load_state_dict(clean, strict=True)
+                        print("[TimmObsEncoder] TactileAutoencoderModel weights loaded successfully!")
+                    else:
+                        print("[TimmObsEncoder] Skipping pretrain loading (will use trained weights from main checkpoint during inference)")
                 else:
-                    print("[TimmObsEncoder] Skipping loading weights for TactileAutoencoderModel (joint encoder only).")
+                    print("[TimmObsEncoder] Skipping pretrain checkpoint loading (load_pretrain_ckpt=False or path not set)")
 
-                self.pretrained_tactile_model.train()
-                for p in self.pretrained_tactile_model.parameters():
-                    p.requires_grad = True
-
-                self.pretrained_tactile_model = TactileAutoencoderModel(
-                    embed_dim=768,
-                    tactile_patch_size=4,
-                    num_heads=8
-                )
-                del self.pretrained_tactile_model.decoder
                 self.pretrained_tactile_model.train()
                 for p in self.pretrained_tactile_model.parameters():
                     p.requires_grad = True
